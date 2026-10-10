@@ -16,17 +16,23 @@
           <a class="nav-link" routerLink="/pacientes/nuevo" routerLinkActive="active">Registrar Paciente</a>
         </li>
       </ul>
-      <div class="d-flex align-items-center gap-2">
+      <div class="d-flex align-items-center gap-2 flex-wrap">
         @if (!editandoUrl) {
           <span class="badge bg-dark bg-opacity-50 text-white font-monospace text-truncate" style="max-width: 280px;" title="{{ pacienteService.getUrl() }}">
             API: {{ pacienteService.getUrl() }}
           </span>
-          <button class="btn btn-sm btn-outline-light" type="button" (click)="toggleEditUrl()">Cambiar URL</button>
+          <div class="btn-group btn-group-sm">
+            <button class="btn btn-outline-light" type="button" (click)="toggleEditUrl()">Cambiar URL</button>
+            <button class="btn btn-outline-light" type="button" (click)="restablecerPredeterminada()" title="Restablecer URL por defecto">↺ Reset</button>
+          </div>
         } @else {
-          <div class="input-group input-group-sm" style="max-width: 420px;">
-            <input type="text" class="form-control" [(ngModel)]="apiUrlEdit" placeholder="http://localhost:8080/api/pacientes">
-            <button class="btn btn-success" type="button" (click)="guardarUrl()">Guardar</button>
-            <button class="btn btn-outline-light" type="button" (click)="toggleEditUrl()">Cancelar</button>
+          <div class="d-flex gap-1 align-items-center flex-wrap">
+            <button type="button" class="btn btn-sm btn-outline-light" (click)="seleccionarPreset(DEFAULT_URL)">Localhost :8080</button>
+            <div class="input-group input-group-sm" style="max-width: 380px;">
+              <input type="text" class="form-control" [(ngModel)]="apiUrlEdit" placeholder="http://localhost:8080/api/pacientes">
+              <button class="btn btn-success" type="button" (click)="guardarUrl()">Guardar</button>
+              <button class="btn btn-outline-light" type="button" (click)="toggleEditUrl()">Cancelar</button>
+            </div>
           </div>
         }
       </div>

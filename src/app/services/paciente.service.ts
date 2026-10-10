@@ -9,16 +9,35 @@ import { environment } from '../../environments/environment';
 })
 export class PacienteService {
 
-  private apiUrl = environment.apiUrl || 'http://localhost:8080/api/pacientes';
+  public static readonly DEFAULT_URL = 'http://localhost:8080/api/pacientes';
+  private readonly STORAGE_KEY = 'swad_sist1402a_api_url';
 
-  constructor(private http: HttpClient) {}
+  private apiUrl: string;
+
+  constructor(private http: HttpClient) {
+    const guardada = typeof window !== 'undefined' ? localStorage.getItem(this.STORAGE_KEY) : null;
+    this.apiUrl = guardada || environment.apiUrl || PacienteService.DEFAULT_URL;
+  }
 
   getUrl(): string {
     return this.apiUrl;
   }
 
   setUrl(url: string): void {
-    this.apiUrl = url;
+    const limpia = url.trim();
+    if (limpia) {
+      this.apiUrl = limpia;
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(this.STORAGE_KEY, limpia);
+      }
+    }
+  }
+
+  restablecerUrlPredeterminada(): void {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(this.STORAGE_KEY);
+    }
+    this.apiUrl = environment.apiUrl || PacienteService.DEFAULT_URL;
   }
 
   listar(): Observable<Paciente[]> {

@@ -15,6 +15,8 @@ export class Navbar {
   apiUrlEdit = '';
   editandoUrl = false;
 
+  readonly DEFAULT_URL = PacienteService.DEFAULT_URL;
+
   constructor(public pacienteService: PacienteService) {
     this.apiUrlEdit = this.pacienteService.getUrl();
   }
@@ -26,11 +28,23 @@ export class Navbar {
     }
   }
 
+  seleccionarPreset(url: string): void {
+    this.apiUrlEdit = url;
+    this.guardarUrl();
+  }
+
   guardarUrl(): void {
     if (this.apiUrlEdit.trim()) {
       this.pacienteService.setUrl(this.apiUrlEdit.trim());
       this.editandoUrl = false;
       window.location.reload();
     }
+  }
+
+  restablecerPredeterminada(): void {
+    this.pacienteService.restablecerUrlPredeterminada();
+    this.apiUrlEdit = this.pacienteService.getUrl();
+    this.editandoUrl = false;
+    window.location.reload();
   }
 }

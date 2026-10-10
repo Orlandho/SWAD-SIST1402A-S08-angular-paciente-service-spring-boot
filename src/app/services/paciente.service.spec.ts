@@ -128,4 +128,17 @@ describe('PacienteService (SIST1402A Semana 8 Lab 08)', () => {
     expect(req.request.method).toBe('GET');
     req.flush([mockPacientes[0]]);
   });
+
+  it('setUrl() debe persistir la URL en localStorage', () => {
+    service.setUrl('http://localhost:9090/api/pacientes');
+    expect(service.getUrl()).toBe('http://localhost:9090/api/pacientes');
+    expect(localStorage.getItem('swad_sist1402a_api_url')).toBe('http://localhost:9090/api/pacientes');
+  });
+
+  it('restablecerUrlPredeterminada() debe limpiar localStorage y restaurar URL base', () => {
+    service.setUrl('http://custom-hospital:8080/api/pacientes');
+    service.restablecerUrlPredeterminada();
+    expect(localStorage.getItem('swad_sist1402a_api_url')).toBeNull();
+    expect(service.getUrl()).toBe(PacienteService.DEFAULT_URL);
+  });
 });

@@ -32,6 +32,35 @@ Esta solucion resuelve la transicion definitiva desde datos simulados en memoria
 
 El siguiente diagrama detalla la arquitectura desacoplada implementada entre el frontend Angular y el microservicio backend de historias clinicas:
 
+```mermaid
+graph TD
+    subgraph Frontend["Frontend Angular SPA (SIST1402A Semana 8)"]
+        Nav["Navbar (Control Dinámico de Endpoint)"]
+        List["PacienteList Component (Módulo de Triaje)"]
+        Form["PacienteForm Component (Ingreso / Edición)"]
+        Signals["Estado Reactivo con Signals (totales, filtros, listas)"]
+        DataService["PacienteService (Patrón Data Service / Contrato HttpClient)"]
+        Http["HttpClient Angular (RxJS Observables)"]
+
+        List --> Signals
+        List --> DataService
+        Form --> DataService
+        DataService --> Http
+    end
+
+    subgraph Backend["Backend RESTful Spring Boot 3 (clinica-backend)"]
+        Controller["PacienteController (/api/pacientes)"]
+        Service["PacienteService (Transaccional)"]
+        Repo["PacienteRepository (Spring Data JPA)"]
+        DB[("H2 Database / Persistencia Relacional")]
+
+        Http -->|Peticiones HTTP JSON| Controller
+        Controller --> Service
+        Service --> Repo
+        Repo --> DB
+    end
+```
+
 ![Diagrama de Arquitectura de Integracion](mermaid%20diagramas/arquitectura.svg)
 
 ---
