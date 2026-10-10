@@ -1,0 +1,104 @@
+<div class="container py-4" style="max-width: 720px;">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white py-3">
+      <h3 class="h5 mb-0 fw-bold">
+        {{ editando ? 'Editar Ficha de Paciente #' + id : 'Ingreso a Triaje de Paciente' }}
+      </h3>
+    </div>
+    <div class="card-body p-4">
+      @if (mensaje) {
+        <div class="alert alert-danger" role="alert">
+          {{ mensaje }}
+        </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+        <!-- Nombre y DNI -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-7">
+            <label class="form-label fw-semibold" for="nombrePaciente">Apellidos y Nombres</label>
+            <input
+              id="nombrePaciente"
+              type="text"
+              class="form-control"
+              [class.is-invalid]="form.controls.nombre.touched && form.controls.nombre.invalid"
+              placeholder="Ej: Pérez Quispe Juan Carlos"
+              formControlName="nombre">
+            @if (form.controls.nombre.touched && form.controls.nombre.invalid) {
+              <div class="invalid-feedback">El nombre es obligatorio (mínimo 3 caracteres).</div>
+            }
+          </div>
+          <div class="col-md-5">
+            <label class="form-label fw-semibold" for="dniPaciente">DNI (8 dígitos)</label>
+            <input
+              id="dniPaciente"
+              type="text"
+              maxlength="8"
+              class="form-control"
+              [class.is-invalid]="form.controls.dni.touched && form.controls.dni.invalid"
+              placeholder="72345678"
+              formControlName="dni">
+            @if (form.controls.dni.touched && form.controls.dni.invalid) {
+              <div class="invalid-feedback">DNI obligatorio de exactamente 8 dígitos numéricos.</div>
+            }
+          </div>
+        </div>
+
+        <!-- Edad, Teléfono y Nivel de Triaje -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-3">
+            <label class="form-label fw-semibold" for="edadPaciente">Edad</label>
+            <input
+              id="edadPaciente"
+              type="number"
+              class="form-control"
+              [class.is-invalid]="form.controls.edad.touched && form.controls.edad.invalid"
+              formControlName="edad">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold" for="telPaciente">Teléfono Contacto</label>
+            <input
+              id="telPaciente"
+              type="text"
+              class="form-control"
+              formControlName="telefono">
+          </div>
+          <div class="col-md-5">
+            <label class="form-label fw-semibold" for="triajeSelect">Prioridad / Triaje</label>
+            <select id="triajeSelect" class="form-select" formControlName="triaje">
+              <option value="Critico">Crítico (Prioridad 1 - Rojo)</option>
+              <option value="Medio">Medio (Prioridad 2 - Amarillo)</option>
+              <option value="Bajo">Bajo (Prioridad 3 - Verde)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Diagnóstico / Motivo de Consulta -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold" for="diagnosticoText">Motivo de Consulta y Diagnóstico Preliminar</label>
+          <textarea
+            id="diagnosticoText"
+            rows="3"
+            class="form-control"
+            [class.is-invalid]="form.controls.diagnostico.touched && form.controls.diagnostico.invalid"
+            placeholder="Describa la sintomatología o evaluación del médico de triaje..."
+            formControlName="diagnostico"></textarea>
+          @if (form.controls.diagnostico.touched && form.controls.diagnostico.invalid) {
+            <div class="invalid-feedback">El diagnóstico requiere al menos 5 caracteres descriptivos.</div>
+          }
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+          <a routerLink="/pacientes" class="btn btn-outline-secondary">Cancelar</a>
+          <button type="submit" class="btn btn-primary px-4" [disabled]="guardando">
+            @if (guardando) {
+              <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+            }
+            {{ editando ? 'Actualizar Ficha' : 'Guardar Paciente' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

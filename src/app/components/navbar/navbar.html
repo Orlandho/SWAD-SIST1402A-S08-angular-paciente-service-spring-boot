@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand fw-bold d-flex align-items-center gap-2" routerLink="/pacientes">
+      <span class="badge bg-light text-primary">SIST1402A</span>
+      Gestión Hospitalaria &bull; Triaje Clínico
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navHospital">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navHospital">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/pacientes" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Lista de Pacientes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/pacientes/nuevo" routerLinkActive="active">Registrar Paciente</a>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center gap-2">
+        @if (!editandoUrl) {
+          <span class="badge bg-dark bg-opacity-50 text-white font-monospace text-truncate" style="max-width: 280px;" title="{{ pacienteService.getUrl() }}">
+            API: {{ pacienteService.getUrl() }}
+          </span>
+          <button class="btn btn-sm btn-outline-light" type="button" (click)="toggleEditUrl()">Cambiar URL</button>
+        } @else {
+          <div class="input-group input-group-sm" style="max-width: 420px;">
+            <input type="text" class="form-control" [(ngModel)]="apiUrlEdit" placeholder="http://localhost:8080/api/pacientes">
+            <button class="btn btn-success" type="button" (click)="guardarUrl()">Guardar</button>
+            <button class="btn btn-outline-light" type="button" (click)="toggleEditUrl()">Cancelar</button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</nav>
