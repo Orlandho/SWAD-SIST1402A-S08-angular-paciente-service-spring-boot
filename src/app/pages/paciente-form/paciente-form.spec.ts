@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter, ActivatedRoute } from '@angular/router';
+import { throwError } from 'rxjs';
+import { vi } from 'vitest';
 import { PacienteForm } from './paciente-form';
 import { PacienteService } from '../../services/paciente.service';
 
@@ -63,5 +65,28 @@ describe('PacienteForm Component (SIST1402A Semana 8 Lab 08)', () => {
     expect(component.form.controls.dni.valid).toBe(true);
     expect(component.form.controls.diagnostico.valid).toBe(true);
     expect(component.form.valid).toBe(true);
+  });
+
+  it('debe manejar error al guardar y actualizar estado y mensaje', () => {
+    const service = TestBed.inject(PacienteService);
+    const spy = vi.spyOn(service, 'registrar').mockReturnValue(
+      throwError(() => ({ status: 500 }))
+    );
+
+    component.form.patchValue({
+      nombre: 'Pérez Carlos',
+      dni: '12345678',
+      edad: 40,
+      diagnostico: 'Gripe severa con dolor agudo',
+      triaje: 'Critico',
+      telefono: '987654321'
+    });
+
+    component.guardar();
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalled();
+    expect(component.guardando).toBe(false);
+    expect(component.mensaje).toContain('HTTP 500');
   });
 });

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -18,6 +18,7 @@ export class PacienteForm implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private pacienteService = inject(PacienteService);
+  private cdr = inject(ChangeDetectorRef);
 
   id?: number;
   editando = false;
@@ -52,9 +53,11 @@ export class PacienteForm implements OnInit {
             activo: p.activo,
             fechaIngreso: p.fechaIngreso
           });
+          this.cdr.markForCheck();
         },
         error: err => {
           this.mensaje = `Error al recuperar datos del paciente (HTTP ${err?.status ?? '404'})`;
+          this.cdr.markForCheck();
         }
       });
     }
@@ -78,11 +81,13 @@ export class PacienteForm implements OnInit {
     peticion.subscribe({
       next: () => {
         this.guardando = false;
+        this.cdr.markForCheck();
         this.router.navigate(['/pacientes']);
       },
       error: err => {
         this.guardando = false;
         this.mensaje = `Error al guardar en el servidor: HTTP ${err?.status ?? 'Fallo'}`;
+        this.cdr.markForCheck();
       }
     });
   }

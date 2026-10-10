@@ -4,7 +4,7 @@
   "description": "Clinical Patient Triage SPA Architecture consuming Spring Boot REST API via PacienteService and HttpClient (SIST1402A Semana 8 Lab 08)",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port 4201",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --no-watch"
