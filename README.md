@@ -146,7 +146,8 @@ El backend iniciara en el puerto `8080`, exponiendo la API en `http://localhost:
 npm install
 npm start
 ```
-Abrir el navegador en `http://localhost:4200/pacientes`.
+El frontend iniciara en el puerto dedicado `4201` para evitar colisiones con el Laboratorio 08.
+Abrir el navegador en `http://localhost:4201/pacientes`.
 
 ---
 
@@ -160,8 +161,8 @@ npm test
 Resultado:
 ```
 Test Files  3 passed (3)
-     Tests  12 passed (12)
-  Duration  4.10s
+     Tests  15 passed (15)
+  Duration  4.48s
 ```
 
 ### Pruebas de Backend (JUnit 5 + MockMvc)
